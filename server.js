@@ -1,27 +1,32 @@
-const express=require('express')
-const cors=require('cors')
-const bodyParser=require('body-parser')
-const mongoose=require('mongoose')
-const dotenv=require('dotenv')
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 dotenv.config();
+const app = express();
 
-const routes=require('./routes/crudRoute')
+const routes = require("./routes/crudRoute");
 
-const port=process.env.PORT
-const db=process.env.MONGO_DB
+// declaratioons
+const port = process.env.PORT;
+const db = process.env.MONG_URI;
 
-const app=express();
-
-app.use(express.json())
-app.use(bodyParser.urlencoded({extended:true}))
-app.use(cors())
+// middlewares
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 
 //routes
-app.use('/',routes)
+app.use("/", routes);
 
 //connecting to db
-mongoose.connect(db).then(()=>{
-    app.listen(port,()=>{
-        console.log("connected");
-    })  
-})
+try {
+  mongoose.connect(db).then(() => {
+    app.listen(port, () => {
+      console.log("connected");
+    });
+  });
+} catch (err) {
+  res.send(err);
+}
