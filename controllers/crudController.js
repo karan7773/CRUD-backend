@@ -3,12 +3,13 @@ const value=require('../models/crudModals')
 //post handler function
 const createValue=(req,res)=>{
     const {val}=req.body
+    console.log(val);
     try{
         const newval=new value({
             val
         });
         newval.save();
-        return res.status(200).send(newval);
+        res.json(newval);
     }catch(err){
         return res.send(err);
     }
@@ -16,8 +17,12 @@ const createValue=(req,res)=>{
 
 //get all values handler function
 const getValues=async (req,res)=>{
+    try {
     const values=await value.find({});
-    res.send(values)
+    return res.json(values)
+    } catch (error) {
+        return console.log(error);
+    }
 }
 
 //get single value functon
@@ -25,7 +30,7 @@ const getValue=async(req,res)=>{
     const {id}=req.params
 
     const val=await value.findById(id);
-    res.send(val)
+    res.json(val)
 }
 
 //delete handler function
